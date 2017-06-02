@@ -1,4 +1,4 @@
-# this is a test bed app for react deployed on a express server
+# Starter code template for Mongo Express React Node app (MERN app)
 
 ## controllers
 - use sendFile for html in public
