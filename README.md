@@ -1,21 +1,22 @@
-## this is a test bed app for react deployed on a express server
+# this is a test bed app for react deployed on a express server
 
-# controllers
+## controllers
 - use sendFile for html in public
 - do not use index in public html it gets confused if using views
 - use render for views using a view engine
 
-# sourcing
+## sourcing
 - use the src attribute in a script tag to include bundle.js
 - see: webpack.config.js
 
-# webpack.config.js
+## webpack.config.js
 - must specify entry module ie: ./app/app
 - app extension may be .js or .jsx
 - must specify output module ie: ./public/bundle.js
 - bundle.js is created by babel do not make this file it will be renamed something different
 - include module loaders
-#############################################
+## config script
+- copy and paste into the file
 
 module.exports = {
 
@@ -49,29 +50,44 @@ module.exports = {
   devtool: "eval-source-map"
 };
 
-############################################
 
-# dependencies
+## dependencies
 - react
 - react-dom
 - express
 - views engine of choice
 - body-parser
 
-# devDependencies
+## devDependencies
 - babel-core // base babel
 - babel-loader // loader for transpiler
 - babel-preset-env // latest presets for es
 - babel-preset-react // need to reconise jsx
 - webpack // bundles modules
 
-############################################
 
-%
-npm init --yes && npm install react react-dom express express-handlebars body-parser --save && npm install babel-core babel-loader babel-preset-env webpack --Dev-save
+## file scripts
+- copy and paste into terminal
 
-############################################
-# local deployment
+mkdir models controllers public views app &&
+mkdir public/assets views/layouts app/components &&
+mkdir public/assets/css public/assets/js public/assets/images app/components/children &&
+touch views/index.jsx &&
+touch views/layouts/main.jsx &&
+touch public/test.html &&
+touch public/assets/css/style.css &&
+touch public/assets/js/myapp.js &&
+touch controllers/controller.js &&
+touch models/master.js &&
+touch models/slave.js &&
+touch app/app.jsx &&
+touch app/components/main.jsx &&
+touch app/components/children/parent.jsx &&
+touch app/components/children/child.jsx &&
+touch app/components/children/grandchild.jsx &&
+npm init --yes && npm install react react-dom express mongoose axios socket.io body-parser --save && npm install babel-core babel-loader babel-preset-env webpack --Dev-save
+
+## local deployment
 - run webpack -w in the directory in one terminal window
 - run node or nodemon server in another terminal window in the same directory
 
