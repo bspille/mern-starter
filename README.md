@@ -85,6 +85,8 @@ touch app/components/main.jsx &&
 touch app/components/children/parent.jsx &&
 touch app/components/children/child.jsx &&
 touch app/components/children/grandchild.jsx &&
+touch server.js &&
+touch webpack.config.js &&
 echo node_modules | tee .gitignore &&
 npm init --yes && npm install react react-dom express mongoose axios socket.io body-parser --save && npm install babel-core babel-loader babel-preset-env webpack --save-dev
 
