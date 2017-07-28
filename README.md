@@ -50,18 +50,18 @@ running this through the node server may require refreshing the page.
 
 
 ## file scripts
-- Copy and paste into terminal starter-script.txt
+- create a working directory and cd into it
+- Copy and paste text from starter-script.txt into the terminal
 - This will create a boilerplate app file stucture and code base
-- Note that this may need to be worked on to produce nicer looking code
 
 ## local deployment
 ### add scripts to packages.json
 -   "clean": "rimraf build",
-    "build": "NODE_ENV=production npm run clean && webpack -p",
-    "serve": "webpack-dev-server",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build && node server.js",
-    "start-dev": "nodemon server"
+-   "build": "NODE_ENV=production npm run clean && webpack -p",
+-   "serve": "webpack-dev-server",
+-   "test": "echo \"Error: no test specified\" && exit 1",
+-   "start": "npm run build && node server.js",
+-   "start-dev": "nodemon server"
 ### how to run
 - npm run clean // will remove the build directory that gets created using webpack
 - npm run build // will first clean up then bundle the modules into a build directory in production mode
