@@ -2,18 +2,15 @@ mkdir models routes styles src controllers &&
 mkdir src/components &&
 touch controllers/index.js &&
 
-echo
-import React from 'react';
+echo 'import React from 'react';
 import reactDOM from 'react-dom';
 
 
 reactDOM.render(<h2>Hello you</h2>,
 document.getElementById('root')
-);
-| src/index.js &&
+);' | tee src/index.js &&
 
-echo  
-<!DOCTYPE html>
+echo  '<!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -23,40 +20,34 @@ echo
     <body>
         <div id="root"></div>
     </body>
-</html> 
-| tee src/index.htlm &&
+</html>' | tee src/index.html &&
 
-echo 
-const express = require("express");
+echo 'const express = require("express");
 const router = express.Router();
 
 
 // default route add routes above
-router.get('*', (req, res)=> {
-  res.sendFile(Path.join(__dirname, 'build/index.html'));
+router.get("*", (req, res)=> {
+  res.sendFile(Path.join(__dirname, "build/index.html"));
 });
 
-module.exports = router; 
-| tee routes/index.js &&
+module.exports = router;' | tee routes/index.js &&
 
-echo 
-const mongoose = require("mongoose")
+echo 'const mongoose = require("mongoose")
 // Create Schema class
 const Schema = mongoose.Schema
 
 // Create article schema
 const mynewSchema = new Schema({
-  }); // end of schema
+}); // end of schema
 
-  // Create the model
-  const Mynew = mongoose.model("Mynew", mynewSchema);
+// Create the model
+const Mynew = mongoose.model("Mynew", mynewSchema);
 
 // Export the model
-module.exports = Mynew;
-  | models/index.js &&
+module.exports = Mynew;' | tee models/index.js &&
 
-echo
-// Dependencies
+echo '// Dependencies
 const express = require("express");
 const bodyParser = require("body-parser");
 const Path = require("path");
@@ -76,34 +67,31 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 
 
-// wepack dev server // note: NODE_ENV='production' can be set in the comand line appended to the run commands
-if(process.env.NODE_ENV !== 'production'){
+// wepack dev server // note: NODE_ENV="production" can be set in the comand line appended to the run commands
+if(process.env.NODE_ENV !== "production"){
     // runs outside of a production environment
-    const webpackMiddleware = require('webpack-dev-middleware');
-    const webpack = require('webpack');
-    const webpackConfig = require('./webpack.config');
+    const webpackMiddleware = require("webpack-dev-middleware");
+    const webpack = require("webpack");
+    const webpackConfig = require("./webpack.config");
     app.use(webpackMiddleware(webpack(webpackConfig)));
 }
 else{
   // runs for production environment
-  app.use(express.static('build'));
+  app.use(express.static("build"));
   // default routeer middleware
   const routes  = require("./routes");
-  app.use('/', routes);
+  app.use("/", routes);
 }
 
 // starting express app
-  app.listen(PORT, function() {
+app.listen(PORT, function() {
     console.log("App listening on PORT " + PORT);
-  });
+});' | tee server.js &&
 
-| server.js &&
-
-echo 
-const Path = require("path");
+echo 'const Path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const webpack = require('webpack');
+const webpack = require("webpack");
 const VENDOR_LIBS = [
     "axios",
     "express",
@@ -171,12 +159,12 @@ module.exports = {
     },
     // setup for dev tool debuging
     devtool: "eval-source-map"
-};
+};' | tee webpack.config.js &&
 
-| webpack.config.js &&
-
-echo 
-node_modules pachage-lock.json build 
-| tee .gitignore &&
+echo 'node_modules 
+pachage-lock.json' | tee .gitignore &&
+echo '{
+    "presets": ["env", "react"]
+}' | tee .babelrc &&
 
 npm init --yes && npm i --save react react-dom express mongoose axios react-router-dom redux react-redux lodash body-parser cors && npm i --save-dev babel-core babel-loader babel-preset-env babel-preset-react webpack webpack-dev-server webpack-dev-middleware html-webpack-plugin extract-text-webpack-plugin css-loader rimraf
