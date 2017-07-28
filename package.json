@@ -1,25 +1,52 @@
 {
-  "name": "react_test",
+  "name": "mern-starter",
   "version": "1.0.0",
-  "description": "# controllers - use sendFile for html in public - do not use index in public html it gets confused if using views - use render for views using a view engine",
-  "main": "server.js",
-  "dependencies": {
-    "babel-core": "^6.24.1",
-    "babel-loader": "^7.0.0",
-    "babel-preset-env": "^1.5.1",
-    "body-parser": "^1.17.2",
-    "express": "^4.15.3",
-    "express-handlebars": "^3.0.0",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
-    "webpack": "^2.6.1"
-  },
-  "devDependencies": {},
+  "description": "## controllers - use sendFile for html in public - do not use index in public html it gets confused if using views - use render for views using a view engine",
+  "main": "api-server.js",
   "scripts": {
+    "clean": "rimraf build",
+    "build": "NODE_ENV=production npm run clean && webpack -p",
+    "serve": "webpack-dev-server",
+    "postinstall": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "npm run build && node server.js",
+    "start-dev": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bspille/mern-starter.git"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bspille/mern-starter/issues"
+  },
+  "homepage": "https://github.com/bspille/mern-starter#readme",
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.4",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "html-webpack-plugin": "^2.29.0",
+    "rimraf": "^2.6.1",
+    "webpack": "^3.4.1",
+    "webpack-dev-middleware": "^1.11.0",
+    "webpack-dev-server": "^2.6.1"
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "body-parser": "^1.17.2",
+    "cors": "^2.8.4",
+    "express": "^4.15.3",
+    "lodash": "^4.17.4",
+    "mongoose": "^4.11.4",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-redux": "^5.0.5",
+    "react-router-dom": "^4.1.2",
+    "redux": "^3.7.2"
+  }
 }

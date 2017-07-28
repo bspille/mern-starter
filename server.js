@@ -1,13 +1,12 @@
 
 // Dependencies
-var express = require("express"),
-    bodyParser = require("body-parser"),
-    exphbs = require("express-handlebars"),
-    mongoose = require("mongoose");
+const express = require("express");
+const bodyParser = require("body-parser");
+const Path = require("path");
 
 // Sets up the Express App
-var app = express();
-var PORT = process.env.PORT || 3000;
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 // serve public files as static
 app.use(express.static("public"));
@@ -18,27 +17,23 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
-// // Database configuration with mongoose
-// mongoose.connect("mongodb:/localhost/hello");
-// var db = mongoose.connection;
-//
-// // Show any mongoose errors
-// db.on("error", function(error) {
-//   console.log("Mongoose Error: ", error);
-// });
-//
-// // Once logged in to the db through mongoose, log a success message
-// db.once("open", function() {
-//   console.log("Mongoose connection successful.");
-// });
 
-// router
-var routes  = require("./controllers/controller.js");
-app.use('/', routes);
 
-// set up handlebars engine
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+// wepack dev server // note: NODE_ENV='production' can be set in the comand line appended to the run commands
+if(process.env.NODE_ENV !== 'production'){
+    // runs outside of a production environment
+    const webpackMiddleware = require('webpack-dev-middleware');
+    const webpack = require('webpack');
+    const webpackConfig = require('./webpack.config');
+    app.use(webpackMiddleware(webpack(webpackConfig)));
+}
+else{
+  // runs for production environment
+  app.use(express.static('build'));
+  // default routeer middleware
+  const routes  = require("./routes");
+  app.use('/', routes);
+}
 
 // starting express app
   app.listen(PORT, function() {

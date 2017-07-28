@@ -1,64 +1,47 @@
 # Starter code template for Mongo Express React Node app (MERN app)
 
 ## controllers
-- use sendFile for html in public
-- do not use index in public html it gets confused if using views
-- use render for views using a view engine
+- use to interface with back end technologies and generally provide callback methods for the routes
 
 ## sourcing
-- use the src attribute in a script tag to include bundle.js
-- see: webpack.config.js
+- Sourcing is now handled with a plugin and code spliting.
 
-## webpack.config.js
-- must specify entry module ie: ./app/app
-- app extension may be .js or .jsx
-- must specify output module ie: ./public/bundle.js
-- bundle.js is created by babel do not make this file it will be renamed something different
-- include module loaders
+## file naming
+- extension .js allows for imports and requires without the .js
+- index is the default file loaded when a dirctory is imported using index allows for shorter naming
+- try to keep the file system flat
+- use meaningful nameing and lowercase with hyphens for file names and directories
+- classes all start with a capital character and camel case
+- use es6 as much as possible
+- controller are used for controlling something and can provide callback methods for the routes
+- routes handle the incoming requests
+- middlewares are a great way to handle errors and authorizing incoming requests
 ## config script
-- copy and paste into the file
+See the new webpack config now support webpack dev server integration with node.
 
-module.exports = {
-
-  // This is the entry point or start of our react applicaton
-  entry: "./app/app.jsx",
-
-  // The plain compiled JavaScript will be output into this file
-  output: {
-    filename: "public/bundle.js"
-  },
-
-  // This section desribes the transformations we will perform
-  module: {
-    loaders: [
-      {
-        // Only working with files that in in a .js or .jsx extension
-        test: /\.jsx?$/,
-        // Webpack will only process files in our app folder. This avoids processing
-        // node modules and server files unnecessarily
-        include: /app/,
-        loader: "babel-loader",
-        query: {
-          // These are the specific transformations we'll be using.
-          presets: ["react", "env"]
-        }
-      }
-    ]
-  },
-  // This lets us debug our react code in chrome dev tools. Errors will have lines and file names
-  // Without this the console says all errors are coming from just coming from bundle.js
-  devtool: "eval-source-map"
-};
-
+## webpack-dev-server
+This is a small node express server that will live update the code as the files are saved.
+running this through the node server may require refreshing the page.
 
 ## dependencies
 - react
 - react-dom
 - express
-- views engine of choice
 - body-parser
+- axios // used to make http request
+- lodash // used as a user interface utility for nicer control
+- react-router-dom
+- redux // a better way of hamdleing state
+- react-redux // required to connect redux to react components
+- cors // used to handle cross origin resourse sharing
 
 ## devDependencies
+- webpack-dev-server
+- webpack-dev-middleware
+- html-webpack-plugin // builds the html entry point
+- extract-text-webpack-plugin
+- rimraf // compatability tool for rm comands
+- css-loader // loads css
 - babel-core // base babel
 - babel-loader // loader for transpiler
 - babel-preset-env // latest presets for es
@@ -67,32 +50,25 @@ module.exports = {
 
 
 ## file scripts
-- copy and paste into terminal
-
-mkdir models controllers public views app &&
-mkdir public/assets views/layouts app/components &&
-mkdir public/assets/css public/assets/js public/assets/images app/components/children &&
-touch views/index.jsx &&
-touch views/layouts/main.jsx &&
-touch public/test.html &&
-touch public/assets/css/style.css &&
-touch public/assets/js/myapp.js &&
-touch controllers/controller.js &&
-touch models/master.js &&
-touch models/slave.js &&
-touch app/app.jsx &&
-touch app/components/main.jsx &&
-touch app/components/children/parent.jsx &&
-touch app/components/children/child.jsx &&
-touch app/components/children/grandchild.jsx &&
-touch server.js &&
-touch webpack.config.js &&
-echo node_modules | tee .gitignore &&
-npm init --yes && npm install react react-dom express mongoose axios socket.io body-parser --save && npm install babel-core babel-loader babel-preset-env webpack --save-dev
+- Copy and paste into terminal starter-script.txt
+- This will create a boilerplate app file stucture and code base
+- Note that this may need to be worked on to produce nicer looking code
 
 ## local deployment
-- run webpack -w in the directory in one terminal window
-- run node or nodemon server in another terminal window in the same directory
+### add scripts to packages.json
+-   "clean": "rimraf build",
+    "build": "NODE_ENV=production npm run clean && webpack -p",
+    "serve": "webpack-dev-server",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run build && node server.js",
+    "start-dev": "nodemon server"
+### how to run
+- npm run clean // will remove the build directory that gets created using webpack
+- npm run build // will first clean up then bundle the modules into a build directory in production mode
+- npm run serve // will run webpack dev server independently use for developing only client side code
+- npm run start // will first clean and build the build directory for production then start the server
+- npm run start-dev // will run the nodemon on the server in developement mode using webpack-dev-server and webpack-dev-middleware
+- the addition of a postinstall to build the build directory may be needed in the future and testing is not complete 
 
 ## conclusion
 

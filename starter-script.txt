@@ -1,0 +1,182 @@
+mkdir models routes styles src controllers &&
+mkdir src/components &&
+touch controllers/index.js &&
+
+echo
+import React from 'react';
+import reactDOM from 'react-dom';
+
+
+reactDOM.render(<h2>Hello you</h2>,
+document.getElementById('root')
+);
+| src/index.js &&
+
+echo  
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>MERN starter</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css" integrity="sha256-mkKV3FUh67dtli09bVbaYyM1526XgR92cz1uKarE1jo=" crossorigin="anonymous" />
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+</html> 
+| tee src/index.htlm &&
+
+echo 
+const express = require("express");
+const router = express.Router();
+
+
+// default route add routes above
+router.get('*', (req, res)=> {
+  res.sendFile(Path.join(__dirname, 'build/index.html'));
+});
+
+module.exports = router; 
+| tee routes/index.js &&
+
+echo 
+const mongoose = require("mongoose")
+// Create Schema class
+const Schema = mongoose.Schema
+
+// Create article schema
+const mynewSchema = new Schema({
+  }); // end of schema
+
+  // Create the model
+  const Mynew = mongoose.model("Mynew", mynewSchema);
+
+// Export the model
+module.exports = Mynew;
+  | models/index.js &&
+
+echo
+// Dependencies
+const express = require("express");
+const bodyParser = require("body-parser");
+const Path = require("path");
+
+// Sets up the Express App
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// serve public files as static
+app.use(express.static("public"));
+
+// Sets up the Express app to handle data parsing
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.text());
+app.use(bodyParser.json({ type: "application/vnd.api+json" }));
+
+
+
+// wepack dev server // note: NODE_ENV='production' can be set in the comand line appended to the run commands
+if(process.env.NODE_ENV !== 'production'){
+    // runs outside of a production environment
+    const webpackMiddleware = require('webpack-dev-middleware');
+    const webpack = require('webpack');
+    const webpackConfig = require('./webpack.config');
+    app.use(webpackMiddleware(webpack(webpackConfig)));
+}
+else{
+  // runs for production environment
+  app.use(express.static('build'));
+  // default routeer middleware
+  const routes  = require("./routes");
+  app.use('/', routes);
+}
+
+// starting express app
+  app.listen(PORT, function() {
+    console.log("App listening on PORT " + PORT);
+  });
+
+| server.js &&
+
+echo 
+const Path = require("path");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require('webpack');
+const VENDOR_LIBS = [
+    "axios",
+    "express",
+    "body-parser",
+    "lodash",
+    "react",
+    "react-dom",
+    "react-router-dom",
+    "react-redux",
+    "redux",
+];
+
+module.exports = {
+    entry: {
+        // split the code into vendor packages listed above and source code
+        bundle: "./src/index.js",
+        vendor: VENDOR_LIBS
+    },
+    output: {
+        path: Path.resolve(__dirname, "build"),
+        // required to resolve plugins and loader emmits 
+        publicPath: "/",
+        // calls the name by the entry key above and hash to allow for cache busting
+        filename: "[name].[chunkhash].js"
+    },
+    module: {
+        rules: [
+            {
+              // babel loader for react here see presets in babelrc
+                use: "babel-loader",
+                test: /\.js?$/,
+                exclude: /node_modules/
+            },
+            {
+              // loader plugin for extracting text used here for css loading to a seperate file
+                use: ExtractTextPlugin.extract({
+                    use: "css-loader"
+                }),
+                test: /\.css$/
+            }
+           
+        ] 
+    },
+    plugins: [
+        // creates a package for css code
+        new ExtractTextPlugin("style.css"),
+        // used to split code in to smaller packages
+        new webpack.optimize.CommonsChunkPlugin({
+            names: ["vendor", "manifest"]
+        }),
+        // adds script tags to a template and renders it in the build directory
+        new HtmlWebpackPlugin({
+            filename: "index.html",
+            template: "src/index.html"
+        }),
+        // set up for webpack dev server
+        new webpack.DefinePlugin({
+            "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
+        })
+    ],
+    // handles errors cannot resolve fs and net
+    node: {
+        fs: "empty",
+        net: "empty"
+    },
+    // setup for dev tool debuging
+    devtool: "eval-source-map"
+};
+
+| webpack.config.js &&
+
+echo 
+node_modules pachage-lock.json build 
+| tee .gitignore &&
+
+npm init --yes && npm i --save react react-dom express mongoose axios react-router-dom redux react-redux lodash body-parser cors && npm i --save-dev babel-core babel-loader babel-preset-env babel-preset-react webpack webpack-dev-server webpack-dev-middleware html-webpack-plugin extract-text-webpack-plugin css-loader rimraf
