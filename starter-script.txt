@@ -24,6 +24,7 @@ echo  '<!DOCTYPE html>
 
 echo 'const express = require("express");
 const router = express.Router();
+const Path = require("path");
 
 
 // default route add routes above
@@ -161,8 +162,7 @@ module.exports = {
     devtool: "eval-source-map"
 };' | tee webpack.config.js &&
 
-echo 'node_modules 
-pachage-lock.json' | tee .gitignore &&
+echo 'node_modules' | tee .gitignore &&
 echo '{
     "presets": ["env", "react"]
 }' | tee .babelrc &&
