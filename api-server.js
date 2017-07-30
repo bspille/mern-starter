@@ -1,6 +1,6 @@
 // Dependencies
 const express = require("express")
-const routes = require("./routes")
+const routes  = require("./routes");
 const bodyParser = require("body-parser")
 const cors = require("cors")
 const mongoose = require("mongoose") 
@@ -42,7 +42,7 @@ mongoose.connection
 // };
 // app.use(cors());
 
-// routes module applied here as a middleware
+// default routeer middleware
 app.use('/', routes);
 
 // wepack dev server
@@ -53,10 +53,12 @@ if(process.env.NODE_ENV !== 'production'){
     app.use(webpackMiddleware(webpack(webpackConfig)));
 }
 else{
-    app.use(express.static('build'));
-    // default routeer middleware
-    const routes  = require("./routes");
-    app.use('/', routes);
+  app.use(express.static('build'));
+  // default route add routes above
+  app.get('*', (req, res)=> {
+    res.sendFile(Path.join(__dirname, 'build/index.html'));
+  });
+
 }
 
 // follow up middleware set to handle errors

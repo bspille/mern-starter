@@ -3,8 +3,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const Path = require("path");
-
-// Sets up the Express App
+const routes  = require("./routes");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -17,7 +16,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
-
+// default routeer middleware
+app.use('/', routes);
 
 // wepack dev server // note: NODE_ENV='production' can be set in the comand line appended to the run commands
 if(process.env.NODE_ENV !== 'production'){
@@ -30,9 +30,10 @@ if(process.env.NODE_ENV !== 'production'){
 else{
   // runs for production environment
   app.use(express.static('build'));
-  // default routeer middleware
-  const routes  = require("./routes");
-  app.use('/', routes);
+  app.get('*', (req, res)=> {
+    res.sendFile(Path.join(__dirname, 'build/index.html'));
+  });
+
 }
 
 // starting express app
