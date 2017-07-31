@@ -37,10 +37,11 @@ module.exports = {
             },
             {
               // loader plugin for extracting text used here for css loading to a seperate file
+                test: /\.css$/,
                 use: ExtractTextPlugin.extract({
-                    use: "css-loader"
-                }),
-                test: /\.css$/
+                fallback: "style-loader",
+                use: "css-loader"
+                })
             }
            
         ] 
